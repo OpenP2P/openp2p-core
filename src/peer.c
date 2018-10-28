@@ -1,14 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <pthread.h>
-#include <sys/socket.h>
-
-#include <sys/types.h>
-#include <netinet/in.h>
-#include <netdb.h>
 #include <string.h>
 #include <unistd.h>
-#include <errno.h>
+#include <pthread.h>
+#include <sys/socket.h>
 #include <arpa/inet.h>
 
 void receiveMsg(int sockfd) {
@@ -18,8 +13,7 @@ void receiveMsg(int sockfd) {
 	int n= 0;
 	while((n = read(sockfd, buff, sizeof(buff))) > 0) {
 		buff[n] = 0;
-		if(fputs(buff, stdout) == EOF)
-			printf("\n Error : Fputs error");
+		fputs(buff, stdout);
 		printf("\n");
 	}
 }
@@ -33,30 +27,25 @@ void sendMsg(int sockfd) {
 }
 
 void *server(void *port) {
-	int listenfd, connfd;
 	struct sockaddr_in serv_addr;
-
-	//AF_INET - IPv4 SOCK_STREAM - TCP
-	//support more addresses and udp
-	listenfd = socket(AF_INET, SOCK_STREAM, 0);
-	memset(&serv_addr, '0', sizeof(serv_addr));
 
 	serv_addr.sin_family = AF_INET;
 	serv_addr.sin_addr.s_addr = htonl(INADDR_ANY);
 	serv_addr.sin_port = htons(*(int *)port);
 
-	if(bind(listenfd, (struct sockaddr*)&serv_addr, sizeof(serv_addr)) < 0) {
-		printf("Failed to bind the port\n");
-		return NULL;
+	//AF_INET - IPv4 SOCK_STREAM - TCP
+	//support more addresses and udp
+	int listenfd = socket(AF_INET, SOCK_STREAM, 0);
+
+	if(bind(listenfd, (struct sockaddr*)&serv_addr, sizeof(serv_addr)) < 0
+		|| listen(listenfd, 10) < 0) {
+		printf("Failed to init node!\n");
+		exit(-1);
 	}
 
-	if(listen(listenfd, 10) == -1) {
-		printf("Failed to listen\n");
-		return NULL;
-	}
+	//TODO multiple clients
+	int connfd = accept(listenfd, NULL, NULL);
 
-	//multiple clients
-	connfd = accept(listenfd, NULL, NULL);
 	while(1) {
 		receiveMsg(connfd);
 	}
@@ -65,24 +54,19 @@ void *server(void *port) {
 }
 
 void *client(void *port) {
-	int sockfd;
 	struct sockaddr_in serv_addr;
-
-	if((sockfd = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
-		printf("\n Error : could not create socket \n");
-		return NULL;
-	}
 
 	serv_addr.sin_family = AF_INET;
 	serv_addr.sin_port = htons(*(int *)port);
 	serv_addr.sin_addr.s_addr = inet_addr("127.0.0.1");
 
-	while(connect(sockfd, (struct sockaddr *)&serv_addr, sizeof(serv_addr))<0)
-	{
+	int sockfd = socket(AF_INET, SOCK_STREAM, 0);
+
+	//TODO change
+	while(connect(sockfd, (struct sockaddr *)&serv_addr, sizeof(serv_addr))<0) {
 		sleep(1);
-		//printf("\n Error : Connect Failed \n");
-		//return 1;
 	}
+
 	while(1) {
 		sendMsg(sockfd);
 	}
