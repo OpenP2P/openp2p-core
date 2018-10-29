@@ -11,7 +11,7 @@ static client cli;
 
 void init_client(char *d_address, int d_port);
 
-void send_message(char *data);
+void send_data(char *data);
 
 void destroy_client();
 

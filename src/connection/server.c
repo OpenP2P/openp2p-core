@@ -29,7 +29,7 @@ void *server(void *port) {
 
     unsigned char buff[1024];
   	memset(buff, '0', sizeof(buff));
-    
+
   	int n= 0;
   	while((n = read(sockfd, buff, sizeof(buff))) > 0) {
   		buff[n] = 0;

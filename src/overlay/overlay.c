@@ -4,31 +4,53 @@
 #include <pthread.h>
 #include <unistd.h>
 #include "overlay.h"
-#include "mesh/mesh.h"
+#include "topologies/mesh.h"
 #include "../connection/server.h"
 #include "../connection/client.h"
+#include "../connection/message.h"
 
-void notify(unsigned char *data) {
-  printf("%s", data);
-}
+void init_overlay(const char *config_file) {
+  config_t cfg;
+	config_setting_t *setting;
 
-//use getopt for flags
-//change to init function
-int main() {
+	config_init(&cfg);
+	config_read_file(&cfg, config_file);
 
-  port = 5000;
+	setting = config_lookup(&cfg, "self_port");
+	self_port = config_setting_get_int(setting);
 
 	pthread_t srv_thread_id;
-	pthread_create(&srv_thread_id, NULL, server, (void *)&port);
+	pthread_create(&srv_thread_id, NULL, server, (void *)&self_port);
 
-  init_client("127.0.0.1", port);
+  //TODO use this
+  setting = config_lookup(&cfg, "overlay_topology");
+	topology = config_setting_get_string(setting);
+  setting = config_lookup(&cfg, "overlay_topology_config");
+	const char *topology_config = config_setting_get_string(setting);
 
-  send_message("test test\n");
-  send_message("test test\n");
+  //TODO depend on topology
+  init_topology(topology_config);
 
-  destroy_client();
+  setting = config_lookup(&cfg, "boot_address");
+	const char *boot_address = config_setting_get_string(setting);
+  setting = config_lookup(&cfg, "boot_port");
+	int boot_port = config_setting_get_int(setting);
+
+  join((char *)boot_address, boot_port);
+
+  config_destroy(&cfg);
 
 	pthread_join(srv_thread_id, NULL);
+}
 
-	return 0;
+void notify(unsigned char *data) {
+  printf("[NOTIFY] %s", data);
+}
+
+void send_message(message_type type, message msg) {
+  char *addr = msg.address;
+  int port = msg.port;
+  init_client(addr, port);
+  send_data("[JOIN]\n");
+  destroy_client();
 }

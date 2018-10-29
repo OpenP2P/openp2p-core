@@ -15,7 +15,8 @@ void init_client(char *d_address, int d_port) {
 	serv_addr.sin_addr.s_addr = inet_addr(d_address);
 
 	while(connect(sockfd, (struct sockaddr *)&serv_addr, sizeof(serv_addr))<0) {
-		sleep(1);
+    printf("Cannot connect to %s:%d\n", d_address, d_port);
+    sleep(5);
 	}
 
   cli.dest_address = d_address;
@@ -23,7 +24,7 @@ void init_client(char *d_address, int d_port) {
   cli.socket = sockfd;
 }
 
-void send_message(char *data) {
+void send_data(char *data) {
 	write(cli.socket, data, strlen(data));
 }
 
