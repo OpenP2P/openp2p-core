@@ -2,15 +2,17 @@
 #define MESH_H
 
 typedef struct _mesh_node {
-  int identifier;
-  int conn_num;
-  struct _mesh_node *conn;
+  int id;
+  char *address;
+  int port;
 } mesh_node;
 
-static int net_size;
-static mesh_node self;
+static int id;
+static mesh_node *conn;
 
 void init_topology(const char *cfg_file);
+
+void notify_topology(unsigned char *data);
 
 void join(char *address, int port);
 

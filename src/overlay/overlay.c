@@ -44,13 +44,15 @@ void init_overlay(const char *config_file) {
 }
 
 void notify(unsigned char *data) {
-  printf("[NOTIFY] %s", data);
+  //notity_topology(data);
+  printf("[NOTIFY] %s\n", data);
 }
 
 void send_message(message_type type, message msg) {
-  char *addr = msg.address;
-  int port = msg.port;
-  init_client(addr, port);
-  send_data("[JOIN]\n");
+  char *send = malloc(sizeof(msg.payload));
+  init_client(msg.address, msg.port);
+  printf("%s\n", msg.payload);
+  sprintf(send, "%d%s\n", type, msg.payload);
+  send_data(send);
   destroy_client();
 }
