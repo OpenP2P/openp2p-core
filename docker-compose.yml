@@ -1,0 +1,19 @@
+version: '3.3'
+
+services:
+      openp2p_1:
+          image: openp2p
+          networks:
+            - p2p_network
+      openp2p_2:
+          image: openp2p
+          networks:
+            - p2p_network
+      openp2p_3:
+          image: openp2p
+          networks:
+            - p2p_network
+
+networks:
+      p2p_network:
+        driver: bridge
