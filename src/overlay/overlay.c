@@ -11,10 +11,13 @@
 
 void *srv_msg() {
   while(1) {
-    unsigned char buff[1024];
-    receive_msg(buff);
-    //notity_topology(data);
-    printf("[NOTIFY] %s\n", buff);
+    accept_conn();
+    char buff[1024];
+    int n = 0;
+    do {
+      n = receive_msg(n, buff);
+      printf("[NOTIFY] %s", buff);
+    } while(n > 0);
   }
 }
 

@@ -1,16 +1,24 @@
 #ifndef SERVER_H
 #define SERVER_H
 
-int listenfd;
-
 /*
  * Starts the server that will actively listen on the specified port.
  */
 void init_server(int port);
 
 /*
- * Return the message received from the server
+ * Accept connections from the listening socket.
  */
-void *receive_msg(unsigned char* out_buff);
+void accept_conn();
+
+/*
+ * Receive messages from the listening socket.
+ */
+int receive_msg(int n, char *out_buff);
+
+/*
+ * Close the listening socket.
+ */
+void destroy_client();
 
 #endif
