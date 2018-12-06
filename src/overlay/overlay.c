@@ -3,8 +3,8 @@
 #include <libconfig.h>
 #include <pthread.h>
 #include <unistd.h>
+#include <string.h>
 #include "overlay.h"
-#include "topologies/mesh.h"
 #include "../connection/server.h"
 #include "../connection/client.h"
 #include "../connection/message.h"
@@ -17,16 +17,18 @@ void init_overlay(const char *config_file) {
 	config_read_file(&cfg, config_file);
 
 	setting = config_lookup(&cfg, "self_port");
-	self_port = config_setting_get_int(setting);
+	port = config_setting_get_int(setting);
 
 	pthread_t srv_thread_id;
-	pthread_create(&srv_thread_id, NULL, server, (void *)&self_port);
+	pthread_create(&srv_thread_id, NULL, server, (void *)&port);
 
   //TODO use this
   setting = config_lookup(&cfg, "overlay_topology");
 	topology = config_setting_get_string(setting);
   setting = config_lookup(&cfg, "overlay_topology_config");
 	const char *topology_config = config_setting_get_string(setting);
+  if(strcmp(topology, "mesh"))
+    #include "topologies/mesh.h"
 
   //TODO depend on topology
   init_topology(topology_config);

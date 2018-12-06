@@ -3,8 +3,18 @@
 
 #include "../connection/message.h"
 
+/*
+ * Topologies available
+ */
+typedef enum _topologies {
+  MESH = 0,
+  CHORD = 1,
+  KADEMLIA = 2,
+  PASTRY = 3
+} topologies;
+
 // must be usefull??
-static int self_port;
+static int port;
 
 /*
  * Stores the topology beign used.

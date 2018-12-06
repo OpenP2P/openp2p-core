@@ -3,6 +3,7 @@
 #include <libconfig.h>
 #include <pthread.h>
 #include <time.h>
+#include "topology.h"
 #include "mesh.h"
 #include "../overlay.h"
 #include "../../connection/message.h"
@@ -19,7 +20,7 @@ void init_topology(const char *cfg_file) {
 
 	srand(time(NULL));
 	id = rand();
-	conn = malloc(sizeof(mesh_node) * net_size);
+	conn = malloc(sizeof(node) * net_size);
 
 	config_destroy(&cfg);
 }
@@ -31,6 +32,6 @@ void join(char *address, int port) {
 	msg.payload = malloc(sizeof(id));
 	//replacement to itoa()
 	sprintf(msg.payload, "%d", id);
-	
+
 	send_message(JOIN, msg);
 }
