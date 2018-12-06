@@ -6,6 +6,8 @@
 #include <arpa/inet.h>
 #include "client.h"
 
+static client cli;
+
 void init_client(char *d_address, int d_port) {
   struct sockaddr_in serv_addr;
   int sockfd = socket(AF_INET, SOCK_STREAM, 0);
@@ -24,7 +26,7 @@ void init_client(char *d_address, int d_port) {
   cli.socket = sockfd;
 }
 
-void send_data(char *data) {
+void send_msg(char *data) {
 	write(cli.socket, data, strlen(data));
 }
 

@@ -8,6 +8,9 @@
 #include "../overlay.h"
 #include "../../connection/message.h"
 
+static int id;
+static node *conn;
+
 void init_topology(const char *cfg_file) {
 	config_t cfg;
 	config_setting_t *setting;

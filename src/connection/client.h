@@ -11,19 +11,14 @@ typedef struct _client {
 } client;
 
 /*
- * The client beign used.
- */
-static client cli;
-
-/*
  * Initialize the client.
  */
 void init_client(char *d_address, int d_port);
 
 /*
- * Send data through the client.
+ * Send a message through the client.
  */
-void send_data(char *data);
+void send_msg(char *data);
 
 /*
  * Close the client socket and resets the client structure.

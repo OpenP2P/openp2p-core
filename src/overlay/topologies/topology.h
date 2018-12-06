@@ -11,17 +11,6 @@ typedef struct _node {
 } node;
 
 /*
- * Identifier of this node.
- */
-static int id;
-
-/*
- * Pointer to all the connections made with this node.
- * The network size must be specified in the config file.
- */
-static node *conn;
-
-/*
  * Initialize the topology.
  */
 void init_topology(const char *cfg_file);
@@ -36,6 +25,8 @@ void notify_topology(unsigned char *data);
  */
 void join(char *address, int port);
 
+//TODO avoid warning
+node return_self();
 //TODO route, leave
 
 #endif

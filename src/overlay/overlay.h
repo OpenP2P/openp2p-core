@@ -13,14 +13,6 @@ typedef enum _topologies {
   PASTRY = 3
 } topologies;
 
-// must be usefull??
-static int port;
-
-/*
- * Stores the topology beign used.
- */
-static const char *topology;
-
 /*
  * Initialize the overlay.
  */
