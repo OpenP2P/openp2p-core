@@ -9,7 +9,7 @@ This project is still in a very initial stage and do not do many things nor give
 
 ### Requirements
 ```
-libconfig9
+libconfig-dev
 ```
 
 ### Compile
