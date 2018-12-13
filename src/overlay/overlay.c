@@ -21,6 +21,14 @@ void *srv_msg() {
   }
 }
 
+void send_message(message_type type, message msg) {
+  char *send = malloc(sizeof(msg.payload));
+  init_client(msg.address, msg.port);
+  sprintf(send, "%d%s\n", type, msg.payload);
+  send_msg(send);
+  destroy_client();
+}
+
 void init_overlay(const char *config_file) {
   config_t cfg;
 	config_setting_t *setting;
@@ -35,34 +43,28 @@ void init_overlay(const char *config_file) {
   pthread_t srv_thread_id;
 	pthread_create(&srv_thread_id, NULL, srv_msg, NULL);
 
-  //TODO use this
   setting = config_lookup(&cfg, "overlay_topology");
 	const char *topology = config_setting_get_string(setting);
   setting = config_lookup(&cfg, "overlay_topology_config");
 	const char *topology_config = config_setting_get_string(setting);
-  if(strcmp(topology, "mesh")) {
-    #include "topologies/mesh.h"
 
-    //TODO depend on topology
-    init_topology(topology_config);
+  #define TOPOLOGY topology
+  #define __topology_header(x) #x
+  #define _topology_header(x) __topology_header(x)
+  #define topology_header(x) _topology_header(topologies/x.h)
+  #include topology_header(TOPOLOGY)
 
-    setting = config_lookup(&cfg, "boot_address");
-  	const char *boot_address = config_setting_get_string(setting);
-    setting = config_lookup(&cfg, "boot_port");
-  	int boot_port = config_setting_get_int(setting);
+  //TODO depend on topology
+  init_topology(topology_config);
 
-    join((char *)boot_address, boot_port);
+  setting = config_lookup(&cfg, "boot_address");
+  const char *boot_address = config_setting_get_string(setting);
+  setting = config_lookup(&cfg, "boot_port");
+  int boot_port = config_setting_get_int(setting);
 
-    config_destroy(&cfg);
-  }
+  join((char *)boot_address, boot_port);
+
+  config_destroy(&cfg);
 
 	pthread_join(srv_thread_id, NULL);
-}
-
-void send_message(message_type type, message msg) {
-  char *send = malloc(sizeof(msg.payload));
-  init_client(msg.address, msg.port);
-  sprintf(send, "%d%s\n", type, msg.payload);
-  send_msg(send);
-  destroy_client();
 }

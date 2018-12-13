@@ -33,7 +33,6 @@ void join(char *address, int port) {
 	msg.address = address;
 	msg.port = port;
 	msg.payload = malloc(sizeof(id));
-	//replacement to itoa()
 	sprintf(msg.payload, "%d", id);
 
 	send_message(JOIN, msg);
