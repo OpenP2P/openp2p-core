@@ -1,0 +1,11 @@
+language: c
+
+addons:
+  apt:
+    packages:
+    - gcc-7.3
+    - cmake
+    - libconfig9
+
+script:
+  - make all
