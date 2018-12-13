@@ -1,11 +1,6 @@
+dist: xenial
+sudo: true
 language: c
 
-addons:
-  apt:
-    packages:
-    - gcc-7.3
-    - cmake
-    - libconfig9
-
-script:
-  - make all
+install: sudo apt-get install -y make libconfig9
+script: make all
