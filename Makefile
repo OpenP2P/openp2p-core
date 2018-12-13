@@ -1,4 +1,5 @@
 all:
+	mkdir bin
 	gcc -Wall -pthread `pkg-config --cflags libconfig` \
 	-o bin/main \
 	src/main.c \
