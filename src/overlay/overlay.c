@@ -62,7 +62,6 @@ void init_overlay(const char *config_file) {
 void send_message(message_type type, message msg) {
   char *send = malloc(sizeof(msg.payload));
   init_client(msg.address, msg.port);
-  //printf("%s\n", msg.payload);
   sprintf(send, "%d%s\n", type, msg.payload);
   send_msg(send);
   destroy_client();

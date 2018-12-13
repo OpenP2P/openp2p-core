@@ -37,7 +37,7 @@ int receive_msg(int n, char *out_buff) {
 
 	if((n = read(sockfd, buff, sizeof(buff))) > 0) {
 		buff[n] = 0;
-    strcpy(out_buff, buff);
+		strcpy(out_buff, buff);
 		return n;
 	} else {
 		strcpy(out_buff, "\n");

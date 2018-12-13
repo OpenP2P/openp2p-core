@@ -1,5 +1,4 @@
-FROM ubuntu:latest
-MAINTAINER Joao Carvalho <jpldcarvalho@gmail.com>
+FROM ubuntu:18.04
 
 WORKDIR /home/openp2p
 
