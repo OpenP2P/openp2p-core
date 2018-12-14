@@ -12,6 +12,7 @@ static int id;
 static node *conn;
 
 void init_topology(const char *cfg_file) {
+	printf("Initing Mesh topology.\n");
 	config_t cfg;
 	config_setting_t *setting;
 

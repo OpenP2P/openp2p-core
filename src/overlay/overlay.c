@@ -48,6 +48,8 @@ void init_overlay(const char *config_file) {
   setting = config_lookup(&cfg, "overlay_topology_config");
 	const char *topology_config = config_setting_get_string(setting);
 
+  //TODO check if the topology is available
+
   #define TOPOLOGY topology
   #define __topology_header(x) #x
   #define _topology_header(x) __topology_header(x)
