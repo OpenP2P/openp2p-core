@@ -21,9 +21,15 @@ void init_server(int port) {
 	listenfd = socket(AF_INET, SOCK_STREAM, 0);
 
 	if(bind(listenfd, (struct sockaddr*)&serv_addr, sizeof(serv_addr)) < 0
-		|| listen(listenfd, 10) < 0) {
-		printf("Failed to init server!\n");
-		exit(-1);
+		|| listen(listenfd, SOMAXCONN) < 0) {
+		if(bind(listenfd, (struct sockaddr*)&serv_addr, sizeof(serv_addr)) < 0) {
+			printf("FATAL: Failed to bind the socket\n");
+			exit(10);
+		}
+		if(listen(listenfd, SOMAXCONN) < 0) {
+			printf("FATAL: Failed to listen the socket\n");
+			exit(11);
+		}
 	}
 }
 
@@ -31,7 +37,7 @@ void accept_conn() {
 	sockfd = accept(listenfd, NULL, NULL);
 }
 
-int receive_msg(int n, char *out_buff) {
+int rcv_msg(int n, char *out_buff) {
 	char buff[1024];
 	memset(buff, '0', sizeof(buff));
 
@@ -40,7 +46,7 @@ int receive_msg(int n, char *out_buff) {
 		strcpy(out_buff, buff);
 		return n;
 	} else {
-		strcpy(out_buff, "\n");
+		strcpy(out_buff, "\0");
 	}
 
 	close(sockfd);

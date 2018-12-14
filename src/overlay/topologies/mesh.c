@@ -12,7 +12,6 @@ static int id;
 static node *conn;
 
 void init_topology(const char *cfg_file) {
-	printf("Initing Mesh topology.\n");
 	config_t cfg;
 	config_setting_t *setting;
 
@@ -24,9 +23,13 @@ void init_topology(const char *cfg_file) {
 
 	srand(time(NULL));
 	id = rand();
+
 	conn = malloc(sizeof(node) * net_size);
 
 	config_destroy(&cfg);
+
+	printf("INFO: Mesh topology initialized\n");
+	printf("INFO: Node ID = %d\n", id);
 }
 
 void join(char *address, int port) {
@@ -36,5 +39,5 @@ void join(char *address, int port) {
 	msg.payload = malloc(sizeof(id));
 	sprintf(msg.payload, "%d", id);
 
-	send_message(JOIN, msg);
+	overlay_send_message(JOIN, msg);
 }

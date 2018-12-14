@@ -14,7 +14,7 @@ void accept_conn();
 /*
  * Receive messages from the listening socket.
  */
-int receive_msg(int n, char *out_buff);
+int rcv_msg(int n, char *out_buff);
 
 /*
  * Close the listening socket.
