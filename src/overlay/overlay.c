@@ -22,19 +22,20 @@ void *srv_msg() {
   while(1) {
     accept_conn();
     char buff[1024];
-    int n = 0;
-    do {
+    int n = 1;
+    while(n > 0) {
       n = rcv_msg(n, buff);
       //TODO properly receive messages
-      printf("[NOTIFY] %s", buff);
-    } while(n > 0);
+      if(n > 0)
+        printf("[NOTIFY] %s\n", buff);
+    }
   }
 }
 
 void overlay_send_message(message_type type, message msg) {
   char *send = malloc(sizeof(msg.payload));
   init_client(msg.address, msg.port);
-  sprintf(send, "%d%s\n", type, msg.payload);
+  sprintf(send, "%d%s", type, msg.payload);
   send_msg(send);
   destroy_client();
 }
@@ -62,7 +63,7 @@ void init_overlay(const char *config_file) {
   // Check if the topology is available
   int topologies_avail_size = sizeof(topologies_avail) / sizeof(char *);
   for (int i = 0; i <  topologies_avail_size; i++) {
-    char topo_file[25 + strlen(topologies_avail[i])];
+    char topo_file[24 + sizeof(topologies_avail[i])];
     sprintf(topo_file, "src/overlay/topologies/%s.h", topology);
     if(strcmp(topology, topologies_avail[i]) == 0
       && access(topo_file, F_OK) != -1)

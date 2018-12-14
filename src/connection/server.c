@@ -41,7 +41,12 @@ int rcv_msg(int n, char *out_buff) {
 	char buff[1024];
 	memset(buff, '0', sizeof(buff));
 
-	if((n = read(sockfd, buff, sizeof(buff))) > 0) {
+	n = read(sockfd, buff, sizeof(buff));
+	if(n == -1) {
+		printf("ERROR: Error %d reading from socket in server rcv_msg\n", n);
+		close(sockfd);
+		return -1;
+	} else if(n > 0) {
 		buff[n] = 0;
 		strcpy(out_buff, buff);
 		return n;
