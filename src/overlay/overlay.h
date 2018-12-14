@@ -14,7 +14,12 @@ void init_overlay(const char *config_file);
 void overlay_notify(unsigned char *data);
 
 /*
- * Send message trough the communication layer.
+ * Receive message API function.
+ */
+void overlay_rcv_message(message_type type, message msg);
+
+/*
+ * Send message API function.
  */
 void overlay_send_message(message_type type, message msg);
 

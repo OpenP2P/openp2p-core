@@ -5,6 +5,7 @@
 #include <unistd.h>
 #include <string.h>
 #include "overlay.h"
+#include "topologies/topology.h"
 #include "../connection/server.h"
 #include "../connection/client.h"
 #include "../connection/message.h"
@@ -25,9 +26,9 @@ void *srv_msg() {
     int n = 1;
     while(n > 0) {
       n = rcv_msg(n, buff);
-      //TODO properly receive messages
+      //TODO problem if messages are bigger than 1024 bytes
       if(n > 0)
-        printf("[NOTIFY] %s\n", buff);
+        message_receiver(buff);
     }
   }
 }
@@ -52,8 +53,6 @@ void init_overlay(const char *config_file) {
 	int port = config_setting_get_int(setting);
 
 	init_server(port);
-  pthread_t srv_thread_id;
-	pthread_create(&srv_thread_id, NULL, srv_msg, NULL);
 
   setting = config_lookup(&cfg, "overlay_topology");
 	const char *topology = config_setting_get_string(setting);
@@ -88,6 +87,9 @@ void init_overlay(const char *config_file) {
   setting = config_lookup(&cfg, "boot_port");
   int boot_port = config_setting_get_int(setting);
   printf("INFO: Bootstrap node = %s:%d\n", boot_address, boot_port);
+
+  pthread_t srv_thread_id;
+	pthread_create(&srv_thread_id, NULL, srv_msg, NULL);
 
   join((char *)boot_address, boot_port);
 

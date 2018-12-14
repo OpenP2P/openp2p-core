@@ -6,10 +6,13 @@
 #include "topology.h"
 #include "mesh.h"
 #include "../overlay.h"
-#include "../../connection/message.h"
 
-static int id;
+static unsigned int id;
 static node *conn;
+
+void message_receiver(char *msg) {
+	printf("receiver: %s\n", msg);
+}
 
 void init_topology(const char *cfg_file) {
 	config_t cfg;
@@ -36,7 +39,7 @@ void join(char *address, int port) {
 	message msg;
 	msg.address = address;
 	msg.port = port;
-	msg.payload = malloc(sizeof(id));
+	msg.payload = malloc(sizeof(id)+4);
 	sprintf(msg.payload, "%d", id);
 
 	overlay_send_message(JOIN, msg);
