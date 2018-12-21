@@ -1,6 +1,7 @@
 # OpenP2P
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/e97cf194a5e840bbb5fe0a2b8425d3d6)](https://www.codacy.com/app/OpenP2P/openp2p-core?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=jpldcarvalho/openp2p-core&amp;utm_campaign=Badge_Grade)[![Build Status](https://travis-ci.org/jpldcarvalho/openp2p-core.svg?branch=master)](https://travis-ci.org/jpldcarvalho/openp2p-core)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/e97cf194a5e840bbb5fe0a2b8425d3d6)](https://www.codacy.com/app/OpenP2P/openp2p-core?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=jpldcarvalho/openp2p-core&amp;utm_campaign=Badge_Grade)
+[![Build Status](https://travis-ci.org/OpenP2P/openp2p-core.svg?branch=master)](https://travis-ci.org/OpenP2P/openp2p-core)
 
 ## Introduction
 OpenP2P is a framework designed to facilitate the development of applications based in peer-to-peer networks.  
