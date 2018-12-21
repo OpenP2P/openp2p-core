@@ -10,8 +10,12 @@
 static unsigned int id;
 static node *conn;
 
-void message_receiver(char *msg) {
-	printf("receiver: %s\n", msg);
+void message_receiver(char *input) {
+	printf("receiver: %ld %s\n", sizeof(input), input);
+}
+
+void message_processor(message_type type, char *payload) {
+
 }
 
 void init_topology(const char *cfg_file) {
@@ -41,6 +45,7 @@ void join(char *address, int port) {
 	msg.port = port;
 	msg.payload = malloc(sizeof(id)+4);
 	sprintf(msg.payload, "%d", id);
+	msg.payload_size = sizeof(id)+4;
 
 	overlay_send_message(JOIN, msg);
 }

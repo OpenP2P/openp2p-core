@@ -18,7 +18,7 @@ void init_client(char *d_address, int d_port);
 /*
  * Send a message through the client.
  */
-void send_msg(char *data);
+void send_msg(char *data, size_t data_size);
 
 /*
  * Close the client socket and resets the client structure.

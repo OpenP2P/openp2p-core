@@ -26,8 +26,8 @@ void init_client(char *d_address, int d_port) {
   cli.socket = sockfd;
 }
 
-void send_msg(char *data) {
-	write(cli.socket, data, sizeof(data));
+void send_msg(char *data, size_t data_size) {
+	write(cli.socket, data, data_size);
 }
 
 void destroy_client() {

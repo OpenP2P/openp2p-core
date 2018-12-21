@@ -17,6 +17,7 @@ typedef struct _message {
   char *address;
   int port;
   char *payload;
+  size_t payload_size;
 } message;
 
 #endif

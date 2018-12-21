@@ -34,10 +34,10 @@ void *srv_msg() {
 }
 
 void overlay_send_message(message_type type, message msg) {
-  char *send = malloc(sizeof(msg.payload));
+  char *send = malloc(msg.payload_size+4);
   init_client(msg.address, msg.port);
   sprintf(send, "%d%s", type, msg.payload);
-  send_msg(send);
+  send_msg(send, msg.payload_size+4);
   destroy_client();
 }
 

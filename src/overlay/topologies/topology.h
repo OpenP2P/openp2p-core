@@ -25,7 +25,7 @@ void message_receiver(char *msg);
 /*
  * Message processor.
  */
-void message_processor(message_type type, message msg);
+void message_processor(message_type type, char *payload);
 
 /*
  * Notify the topology of new messages from other nodes.
